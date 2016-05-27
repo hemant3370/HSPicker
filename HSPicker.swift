@@ -28,11 +28,13 @@ struct HSSection {
 
 public protocol HSPickerDelegate: class {
     func entityPicker(picker: HSPicker, didSelectEntityWithName name: String)
+    func entityPicker(picker: HSPicker, didUnSelectEntityWithName name: String)
 }
 
 public class HSPicker: UITableViewController {
     
     public var dataSource: [String]?
+    public var selectedItems : [String]?
     
     private var searchController: UISearchController!
     private var filteredList = [HSEntity]()
@@ -166,7 +168,9 @@ extension HSPicker {
             
         }
         cell.textLabel?.text = entity.name
-        
+        if ((selectedItems?.contains(entity.name)) == true) {
+            cell.accessoryType = .Checkmark
+        }
         return cell
     }
     
@@ -207,8 +211,8 @@ extension HSPicker {
             
         }
       tableView.cellForRowAtIndexPath(indexPath)?.accessoryType =  tableView.cellForRowAtIndexPath(indexPath)?.accessoryType == .Checkmark ? .None : .Checkmark
-        delegate?.entityPicker(self, didSelectEntityWithName: entity.name)
-        didSelectEntityClosure?(entity.name)
+        tableView.cellForRowAtIndexPath(indexPath)?.accessoryType == .Checkmark ? delegate?.entityPicker(self, didSelectEntityWithName: entity.name) :   delegate?.entityPicker(self, didUnSelectEntityWithName: entity.name)
+      //  didSelectEntityClosure?(entity.name)
     }
 }
 
