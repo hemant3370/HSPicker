@@ -21,8 +21,19 @@ How to use:
                     //        }
                    self.navigationController?.pushViewController(picker, animated: true)
                 })
-
 Use this in the action of the UI element from which you want the picker to push to navigation stack.
 
-ToDo:
- Selection UI changes
+Add this extension to your view controller :
+ 
+     extension YourViewController: HSPickerDelegate {
+    internal func entityPicker(picker: HSPicker, didSelectEntityWithName name: String) {
+        selectedArray.append("\(name)")
+    }
+    func entityPicker(picker : HSPicker, didUnSelectEntityWithName name : String) {
+        selectedArray.removeAtIndex(selectedArray.indexOf(name)!)
+    }
+}
+ 
+
+
+
