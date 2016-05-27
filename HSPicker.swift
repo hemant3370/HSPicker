@@ -206,7 +206,7 @@ extension HSPicker {
             entity = sections[indexPath.section].entities[indexPath.row]
             
         }
-
+      tableView.cellForRowAtIndexPath(indexPath)?.accessoryType =  tableView.cellForRowAtIndexPath(indexPath)?.accessoryType == .Checkmark ? .None : .Checkmark
         delegate?.entityPicker(self, didSelectEntityWithName: entity.name)
         didSelectEntityClosure?(entity.name)
     }
