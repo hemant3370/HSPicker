@@ -23,3 +23,6 @@ How to use:
                 })
 
 Use this in the action of the UI element from which you want the picker to push to navigation stack.
+
+ToDo:
+ Selection UI changes
