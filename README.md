@@ -1,6 +1,8 @@
 # HSPicker
 Picker with search bar at the top. It cab be fed any custom data. Ready made Sectioning.
 
+[![](https://github.com/hemant3370/HSPicker/blob/master/demo.png)](https://github.com/hemant3370/HSPicker/blob/master/demo.png)
+
 How to use:
      
      let picker = HSPicker { (name) -> () in
