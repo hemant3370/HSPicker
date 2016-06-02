@@ -35,7 +35,7 @@ public class HSPicker: UITableViewController {
     
     public var dataSource: [String]?
     public var selectedItems : [String]?
-    
+    public var tag : Int!
     private var searchController: UISearchController!
     private var filteredList = [HSEntity]()
     private var unsourtedEntities : [HSEntity] {
@@ -111,6 +111,11 @@ public class HSPicker: UITableViewController {
             searchController.dimsBackgroundDuringPresentation = false
             tableView.tableHeaderView = searchController.searchBar
             searchController.searchBar.searchBarStyle = UISearchBarStyle.Prominent
+            searchController.searchBar.barTintColor = UIColor.blackColor()
+            searchController.searchBar.tintColor = UIColor.orangeColor()
+            searchController.searchBar.backgroundColor = UIColor.blackColor()
+            searchController.searchBar.showsBookmarkButton = false
+            searchController.searchBar.showsCancelButton = true
         }
     }
     
@@ -160,6 +165,12 @@ extension HSPicker {
         
         let cell: UITableViewCell! = tempCell
         
+        
+        
+        return cell
+    }
+    
+    public override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         let entity: HSEntity!
         if searchController.searchBar.isFirstResponder() {
             entity = filteredList[indexPath.row]
@@ -168,12 +179,14 @@ extension HSPicker {
             
         }
         cell.textLabel?.text = entity.name
+        
         if ((selectedItems?.contains(entity.name)) == true) {
             cell.accessoryType = .Checkmark
         }
-        return cell
+        else{
+            cell.accessoryType = .None
+        }
     }
-    
     override public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if !sections[section].entities.isEmpty {
             if searchController.searchBar.isFirstResponder() {
@@ -211,7 +224,16 @@ extension HSPicker {
             
         }
       tableView.cellForRowAtIndexPath(indexPath)?.accessoryType =  tableView.cellForRowAtIndexPath(indexPath)?.accessoryType == .Checkmark ? .None : .Checkmark
-        tableView.cellForRowAtIndexPath(indexPath)?.accessoryType == .Checkmark ? delegate?.entityPicker(self, didSelectEntityWithName: entity.name) :   delegate?.entityPicker(self, didUnSelectEntityWithName: entity.name)
+        if tableView.cellForRowAtIndexPath(indexPath)?.accessoryType == .Checkmark {
+            selectedItems?.append(entity.name)
+            delegate?.entityPicker(self, didSelectEntityWithName: entity.name)
+        }
+        else {
+            selectedItems?.removeAtIndex((selectedItems?.indexOf(entity.name))!)
+            delegate?.entityPicker(self, didUnSelectEntityWithName: entity.name)
+        }
+        
+        
       //  didSelectEntityClosure?(entity.name)
     }
 }
